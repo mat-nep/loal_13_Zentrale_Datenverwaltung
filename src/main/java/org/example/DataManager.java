@@ -1,4 +1,7 @@
-import media.Media;
+package org.example;
+
+import org.example.io.FileIO;
+import org.example.media.Media;
 
 import java.io.IOException;
 import java.nio.file.Path;

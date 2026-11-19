@@ -1,4 +1,4 @@
-package media;
+package org.example.media;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;

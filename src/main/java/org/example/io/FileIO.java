@@ -1,7 +1,9 @@
-import media.Book;
-import media.Game;
-import media.Media;
-import media.Movie;
+package org.example.io;
+
+import org.example.media.Book;
+import org.example.media.Game;
+import org.example.media.Media;
+import org.example.media.Movie;
 
 import java.io.*;
 import java.nio.file.Path;
@@ -11,9 +13,7 @@ import java.util.List;
 
 public class FileIO {
 
-    public static Path savedPath
-
-    pu
+    public static Path savedPath;
 
     public static List<Media> readData(Path path) throws IOException {
         List<Media> media = new ArrayList<Media>();
