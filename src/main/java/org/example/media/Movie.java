@@ -16,4 +16,10 @@ public class Movie extends Media{
         String media = String.format("%s;%d", super.toString(), runtime);
         return String.format(media, getClass().getSimpleName());
     }
+
+    @Override
+    public String getExtraInfo()
+    {
+        return String.valueOf(runtime);
+    }
 }

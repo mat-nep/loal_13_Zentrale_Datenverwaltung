@@ -44,4 +44,14 @@ public abstract class Media {
     public String getGenre() {
         return genre;
     }
+
+    public int getYear() {
+        return release != null ? release.getYear() : 0;
+    }
+
+    public String getType() {
+        return this.getClass().getSimpleName();
+    }
+
+    public abstract String getExtraInfo();
 }

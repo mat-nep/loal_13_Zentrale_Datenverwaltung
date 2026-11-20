@@ -17,4 +17,10 @@ public class Book extends Media{
         String media = String.format("%s;%s;%d", super.toString(), autor, pages);
         return String.format(media, getClass().getSimpleName());
     }
+
+    @Override
+    public String getExtraInfo()
+    {
+        return autor + " with ";
+    }
 }

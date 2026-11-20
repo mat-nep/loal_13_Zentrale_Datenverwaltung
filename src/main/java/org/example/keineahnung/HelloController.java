@@ -1,8 +1,12 @@
 package org.example.keineahnung;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import org.example.DataManager;
 import org.example.io.Files_IO_KA;
@@ -24,6 +28,25 @@ public class HelloController
     private Label welcomeText;
 
     @FXML
+    private TableView<Media> tableMedia;
+
+    @FXML
+    private TableColumn<Media, String> colTitle;
+    @FXML
+    private TableColumn<Media, String> colType;
+    @FXML
+    private TableColumn<Media, String> colGenre;
+    @FXML
+    private TableColumn<Media, Integer> colYear;
+    @FXML
+    private TableColumn<Media, Double> colRating; // oder String, je nach Datentyp
+    @FXML
+    private TableColumn<Media, String> colExtra;
+
+    // Das ist die Liste, die direkt mit der Tabelle verknüpft wird
+    private final ObservableList<Media> mediaData = FXCollections.observableArrayList();
+
+    @FXML
     private TextField txtSearch;
 
     public HelloController() throws IOException
@@ -35,6 +58,8 @@ public class HelloController
     {
         welcomeText.setText("Welcome to JavaFX Application!");
     }
+
+
 
 
     public void filterAlleMedien(ActionEvent actionEvent)

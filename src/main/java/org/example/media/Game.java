@@ -16,4 +16,10 @@ public class Game extends Media{
         String media = String.format("%s;%s", super.toString(), studio);
         return String.format(media, getClass().getSimpleName());
     }
+
+    @Override
+    public String getExtraInfo()
+    {
+        return studio;
+    }
 }
