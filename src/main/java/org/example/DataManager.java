@@ -1,7 +1,8 @@
 package org.example;
 
-import org.example.io.FileIO;
+import org.example.io.Files_IO_KA;
 import org.example.media.Media;
+import org.w3c.dom.stylesheets.MediaList;
 
 import java.io.IOException;
 import java.nio.file.Path;
@@ -12,24 +13,36 @@ import java.util.List;
 public class DataManager {
 
     private List<Media> mediaList = new ArrayList();
-    private List<Media> filterdList = new ArrayList(); // todo geter
+    private List<Media> filterdList = new ArrayList();
     private static DataManager instance;
-
+                                                                    // todo only for main methods del
     private DataManager(Path path) throws IOException {
-        mediaList = FileIO.readData(path);
-    }
+        mediaList = Files_IO_KA.readData(path);
+    }   // only for main
+    private DataManager() {}
 
     public static synchronized DataManager getInstance(Path path) throws IOException {
         if (instance == null) {
             instance = new DataManager(path);
         }
         return instance;
+    } // inly for main
+    public static synchronized DataManager getInstance() throws IOException {
+        if (instance == null) {
+            instance = new DataManager();
+        }
+        return instance;
+    }
+
+    public void addList(List<Media> tokens)
+    {
+        mediaList.addAll(tokens);
     }
 
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        for (Media media : mediaList){
+        for (Media media : filterdList){
             sb.append(media.toString());
             sb.append("\n");
         }
@@ -37,9 +50,9 @@ public class DataManager {
         return sb.toString();
     }
 
-    public List searchByTitle(String searchInput){
+    public List<Media> searchByTitle(String searchInput){
         List<Media> matches = new ArrayList<>();
-        for (Media media : mediaList){
+        for (Media media : filterdList){
             if(media.getTitle().toLowerCase().contains(searchInput.toLowerCase())){
                 matches.add(media);
             }
@@ -50,13 +63,20 @@ public class DataManager {
         return matches;
     }
 
-    public void filterListByInstance(String target)
-    {
-        // TODO filter by instance should take a string target and filter the list ( into filterd list ) for that Instance
+    public void filterListByInstance(String target) {
+        // todo testing !!
+        // Liste vorher leeren, falls sie wiederverwendet wird
+        filterdList.clear();
+
+        for (Media m : mediaList) {
+            // null-Check, um NullPointerException zu verhindern
+            if (m != null && m.getClass().getSimpleName().equalsIgnoreCase(target)) {
+                filterdList.add(m);
+            }
+        }
     }
 
-    public void deleteMedia(int id)
-    {
+    public void deleteMedia(int id) {
         for (int i = 0; i < mediaList.size(); i++)
         {
             if (mediaList.get(i).getId() == id)
@@ -85,5 +105,14 @@ public class DataManager {
             return x;
         else
             throw new IllegalArgumentException("one ID exists 2ce...");
+    }
+
+    public List<Media> getFilterdList()
+    {
+        return filterdList;
+    }
+    public List<Media> getMediaList()
+    {
+        return mediaList;
     }
 }

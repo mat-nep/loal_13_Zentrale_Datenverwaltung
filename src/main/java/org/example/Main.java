@@ -14,7 +14,7 @@ public class Main {
             System.out.println(manager);
             manager.searchByTitle("DREAM");
 
-            for (Media m : )
+            //for (Media m : )
         } catch (IOException e) {
             System.out.println("Da ist was schief gelaufen");
         }
