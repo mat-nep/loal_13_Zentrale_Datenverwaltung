@@ -50,7 +50,7 @@ public class DataManager {
         return sb.toString();
     }
 
-    public List<Media> searchByTitle(String searchInput){
+    public List<Media> searchByTitle(String searchInput) {
         List<Media> matches = new ArrayList<>();
         for (Media media : filterdList){
             if(media.getTitle().toLowerCase().contains(searchInput.toLowerCase())){
@@ -69,8 +69,12 @@ public class DataManager {
         filterdList.clear();
 
         for (Media m : mediaList) {
-            // null-Check, um NullPointerException zu verhindern
-            if (m != null && m.getClass().getSimpleName().equalsIgnoreCase(target)) {
+            // Wenn nach "Media" gesucht wird, wollen wir ALLE Medien anzeigen
+            if (target.contains("Media")) {
+                filterdList.add(m);
+            }
+            // Ansonsten exakt nach der Unterklasse (Book, Game, Movie) filtern
+            else if (m.getClass().toString().equalsIgnoreCase(target)) {
                 filterdList.add(m);
             }
         }
@@ -113,6 +117,7 @@ public class DataManager {
     }
     public List<Media> getMediaList()
     {
+        System.out.println("list got returnt form datermanager");
         return mediaList;
     }
 }

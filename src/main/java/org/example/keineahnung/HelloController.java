@@ -8,6 +8,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.cell.PropertyValueFactory;
 import org.example.DataManager;
 import org.example.io.Files_IO_KA;
 import org.example.media.Book;
@@ -23,6 +24,7 @@ public class HelloController
     DataManager dataManager = DataManager.getInstance();
     Path path = Path.of("src/main/java/org/example/res/data.csv");
     String fillterdClass = String.valueOf(Media.class);
+    String filter = "";
 
     @FXML
     private Label welcomeText;
@@ -47,6 +49,33 @@ public class HelloController
     private final ObservableList<Media> mediaData = FXCollections.observableArrayList();
 
     @FXML
+    public void initialize() {
+        // Verbindet die Spalten mit den Gettern Ihrer Media-Klassen
+        colTitle.setCellValueFactory(new PropertyValueFactory<>("title"));
+        colType.setCellValueFactory(new PropertyValueFactory<>("type"));
+        colGenre.setCellValueFactory(new PropertyValueFactory<>("genre"));
+        colYear.setCellValueFactory(new PropertyValueFactory<>("year"));
+        colRating.setCellValueFactory(new PropertyValueFactory<>("rating"));
+        colExtra.setCellValueFactory(new PropertyValueFactory<>("extraInfo"));
+
+        // Bindet die Datenliste an die Tabelle
+        tableMedia.setItems(mediaData);
+
+        // Echtzeit-Suche: Filtert die Tabelle automatisch während Sie tippen!
+        txtSearch.textProperty().addListener((observable, oldValue, newValue) -> {
+            aktualisiereTabelle();
+        });
+    }
+
+    private void aktualisiereTabelle()
+    {
+        dataManager.filterListByInstance(fillterdClass);
+        mediaData.setAll(dataManager.searchByTitle(filter)); // maybe need to add if "" => all into the list
+
+        System.out.print("table got updated\n");
+    }
+
+    @FXML
     private TextField txtSearch;
 
     public HelloController() throws IOException
@@ -54,8 +83,7 @@ public class HelloController
     }
 
     @FXML
-    protected void onHelloButtonClick()
-    {
+    protected void onHelloButtonClick() {
         welcomeText.setText("Welcome to JavaFX Application!");
     }
 
@@ -65,21 +93,25 @@ public class HelloController
     public void filterAlleMedien(ActionEvent actionEvent)
     {
         fillterdClass = String.valueOf(Media.class);
+        aktualisiereTabelle();
     }
 
     public void filterBücher(ActionEvent actionEvent)
     {
         fillterdClass = String.valueOf(Book.class);
+        aktualisiereTabelle();
     }
 
     public void filterSpiele(ActionEvent actionEvent)
     {
         fillterdClass = String.valueOf(Game.class);
+        aktualisiereTabelle();
     }
 
     public void filterFilme(ActionEvent actionEvent)
     {
         fillterdClass = String.valueOf(Movie.class);
+        aktualisiereTabelle();
     }
 
     public void save(ActionEvent actionEvent) throws IOException
@@ -90,17 +122,22 @@ public class HelloController
     public void load(ActionEvent actionEvent) throws IOException
     {
         dataManager.addList(Files_IO_KA.readData(path));
+        aktualisiereTabelle();
     }
 
     public void searchTitle(ActionEvent actionEvent)
     {
         // todo i want to change it so serch by title and filter
         // todo by does the "same thing" so we could say only movies with "the" int the name
-        dataManager.searchByTitle(txtSearch.getText());
+        filter = txtSearch.getText();
         // todo daten anzeigen
+
+        aktualisiereTabelle();
     }
 
     public void resetSearchTitle(ActionEvent actionEvent)
     {
+        filter = "";
+        aktualisiereTabelle();
     }
 }
